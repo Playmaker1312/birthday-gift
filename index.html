@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sayang! ❤️ | Viola Aprilika Rustam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff758c',
+                        secondary: '#ff7eb3',
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+                        },
+                        'bounce-subtle': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    },
+                    transitionTimingFunction: {
+                        'soft-spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        'expo-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .glass-card {
+                @apply bg-white/20 backdrop-blur-lg border border-white/30 rounded-3xl;
+            }
+            .section-title {
+                @apply font-cursive text-5xl md:text-6xl text-primary mb-8;
+            }
+            .nav-link {
+                @apply text-white/80 hover:text-white transition-colors duration-300 font-medium;
+            }
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #fff;
+            margin: 0 auto;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
+        }
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff8fa3;
+            transform-origin: top;
+            transition: 0.5s transform 0.5s;
+        }
+        .envelope.open::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+        .envelope::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            width: 0;
+            height: 0;
+            border-top: 100px solid transparent;
+            border-right: 150px solid #ffb3c1;
+            border-bottom: 100px solid #ffb3c1;
+            border-left: 150px solid #ffc2d1;
+            border-radius: 0 0 10px 10px;
+        }
+        .inner-card {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 180px;
+            background: white;
+            z-index: 1;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            will-change: transform, height, width, bottom;
+        }
+        .envelope.open .inner-card {
+            bottom: 150px;
+            height: 380px;
+            width: 320px;
+            z-index: 3;
+            padding: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Bg Animation */
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            filter: blur(8px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, opacity, filter;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Hover Glow Effect */
+        .hover-glow {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hover-glow:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 117, 140, 0.3);
+        }
+
+        /* Heart optimization */
+        .heart-fly {
+            will-change: transform, opacity;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-custom min-h-screen font-sans text-gray-800 overflow-x-hidden">
+
+    <!-- Floating Background Hearts -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Background Music -->
+    <button id="music-btn"
+        class="fixed bottom-6 right-6 z-50 bg-white p-3 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300">
+        <i data-lucide="music" class="text-primary w-6 h-6"></i>
+    </button>
+    <audio id="bg-music" loop>
+        <source src="JVKE - her (Official Illustrated Music Video).mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex justify-between items-center transition-all duration-300 overflow-hidden"
+        id="navbar">
+        <div class="font-cursive text-2xl text-white drop-shadow-md">Pioo's Day</div>
+        <div class="hidden md:flex gap-8">
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#journey" class="nav-link">Our Journey</a>
+            <a href="#gallery" class="nav-link">Moments</a>
+            <a href="#reasons" class="nav-link">Why You</a>
+            <a href="#letter" class="nav-link">Letter</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex flex-col items-center justify-center relative px-4 pt-20">
+        <div class="text-center mb-12 animate-float">
+            <h2 class="text-white text-xl md:text-2xl font-medium tracking-widest uppercase mb-2 drop-shadow-sm">Special
+                for</h2>
+            <h1 class="font-cursive text-6xl md:text-8xl text-white drop-shadow-lg">Viola Aprilika Rustam</h1>
+        </div>
+
+        <div class="envelope-wrapper" id="envelope-trigger">
+            <div class="envelope" id="envelope">
+                <div class="inner-card flex flex-col items-center justify-between text-center overflow-hidden">
+                    <div class="w-full h-40 bg-pink-100 rounded-lg mb-4 overflow-hidden relative">
+                        <!-- Using user's couple.png -->
+                        <img src="couple.png" alt="Pioo & Me" class="w-full h-full object-cover"
+                            onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400'">
+                    </div>
+                    <div class="card-content transition-all duration-300">
+                        <h3 class="font-cursive text-3xl text-primary mb-2">Happy Birthday!</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Semoga harimu penuh kebahagiaan. Scroll ke bawah ya untuk kejutan kecil lainnya! ❤️
+                        </p>
+                        <div class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Love You Always</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16 text-center" id="hint-container">
+            <p class="text-white font-medium animate-pulse-slow flex flex-col items-center gap-2">
+                <span>Klik amplopnya ya!</span>
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            </p>
+        </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section id="journey" class="py-24 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="section-title scroll-reveal">Our Journey</h2>
+
+            <div class="relative mt-16">
+                <!-- Timeline Line -->
+                <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-white/30 hidden md:block"></div>
+
+                <div class="space-y-12">
+                    <!-- Event 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center scroll-reveal">
+                        <div class="md:w-1/2 pb-8 md:pr-12 md:text-right">
+                            <div class="glass-card hover-glow p-6 inline-block md:block shadow-xl">
+                                <span class="text-primary font-bold text-lg">Pertama Bertemu</span>
+                                <h4 class="text-xl font-bold text-gray-800 mt-1">Awal Segalanya</h4>
+                                <p class="text-gray-600 mt-2 text-sm">Masih ingat pertama kali kita ngobrol? Dunia
+                                    terasa berbeda sejak saat itu.</p>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white border-4 border-primary rounded-full z-10 hidden md:block">
+                        </div>
+                        <div class="md:w-1/2 pt-8 md:pl-12"></div>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div class="relative flex flex-col md:flex-row items-center scroll-reveal">
+                        <div class="md:w-1/2"></div>
+                        <div
+                            class="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white border-4 border-primary rounded-full z-10 hidden md:block">
+                        </div>
+                        <div class="md:w-1/2 pb-8 md:pl-12 text-left">
+                            <div class="glass-card p-6 inline-block md:block shadow-xl">
+                                <span class="text-primary font-bold text-lg">Momen Spesial</span>
+                                <h4 class="text-xl font-bold text-gray-800 mt-1">Kenangan Indah</h4>
+                                <p class="text-gray-600 mt-2 text-sm">Setiap tawa dan canda yang kita bagi, adalah kado
+                                    terindah untukku.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center scroll-reveal">
+                        <div class="md:w-1/2 pb-8 md:pr-12 md:text-right">
+                            <div class="glass-card p-6 inline-block md:block shadow-xl">
+                                <span class="text-primary font-bold text-lg">Hari Ini</span>
+                                <h4 class="text-xl font-bold text-gray-800 mt-1">Ulang Tahunmu!</h4>
+                                <p class="text-gray-600 mt-2 text-sm">Hari dimana dunia menyambut kehadiramu, bidadari
+                                    paling cantik.</p>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white border-4 border-primary rounded-full z-10 hidden md:block">
+                        </div>
+                        <div class="md:w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-white/10 backdrop-blur-sm relative z-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="section-title text-center scroll-reveal">Captured Moments</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+                <div class="aspect-square rounded-2xl overflow-hidden glass-card hover-glow group scroll-reveal"
+                    style="transition-delay: 100ms">
+                    <img src="memories.png" alt="Memory"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&q=80&w=400'">
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden glass-card hover-glow group scroll-reveal"
+                    style="transition-delay: 200ms">
+                    <img src="sunset.png" alt="Sunset"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1522673607200-164883eeca48?auto=format&fit=crop&q=80&w=400'">
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden glass-card hover-glow group scroll-reveal"
+                    style="transition-delay: 300ms">
+                    <img src="cake.png" alt="Cake"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1516589174184-c68526614afb?auto=format&fit=crop&q=80&w=400'">
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden glass-card hover-glow group scroll-reveal"
+                    style="transition-delay: 400ms">
+                    <img src="balloon.png" alt="Balloon"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=400'">
+                </div>
+            </div>
+            <p class="text-center text-white mt-8 italic font-light scroll-reveal">"Every picture tells a story of our
+                love..."</p>
+        </div>
+    </section>
+
+    <!-- Reasons Section -->
+    <section id="reasons" class="py-24 relative z-10 bg-white/5">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="section-title text-center scroll-reveal">Things I Love About You</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <!-- Card 1 -->
+                <div class="glass-card p-10 hover-glow scroll-reveal group text-center" style="transition-delay: 100ms">
+                    <div
+                        class="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                        <i data-lucide="smile" class="text-primary w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Senyum Manismu</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Senyummu itu seperti sihir. Bisa bikin hariku yang tadinya berantakan jadi bahagia dan tenang
+                        seketika.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-10 hover-glow scroll-reveal group text-center" style="transition-delay: 200ms">
+                    <div
+                        class="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                        <i data-lucide="heart-handshake" class="text-primary w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Kebaikan Hatimu</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Cara kamu peduli dan menyayangi orang-orang di sekitarmu selalu membuatku kagum. You have a
+                        heart of gold.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-10 hover-glow scroll-reveal group text-center" style="transition-delay: 300ms">
+                    <div
+                        class="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                        <i data-lucide="sparkles" class="text-primary w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Tingkah Lucumu</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Sometimes you can be so silly and cute. Hal kecil itu yang bikin aku makin sayang sama kamu
+                        setiap hari.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Letter Section -->
+    <section id="letter" class="py-32 px-6 relative z-10">
+        <div
+            class="max-w-2xl mx-auto bg-white/95 p-12 md:p-16 rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden scroll-reveal">
+            <!-- Decorative Elements -->
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <i data-lucide="heart" class="w-32 h-32 text-primary fill-current"></i>
+            </div>
+
+            <h2 class="font-cursive text-5xl text-primary mb-8">Dear Pioo,</h2>
+
+            <div class="space-y-6 text-gray-700 leading-relaxed font-outfit text-lg">
+                <p>
+                    Happy birthday, sayang! Di hari spesialmu ini, aku ingin kamu tahu betapa beruntungnya aku
+                    memilikimu. Kamu bukan cuma sekadar pacar, tapi juga pemberi semangat dan alasan aku tersenyum
+                    setiap hari.
+                </p>
+                <p>
+                    Semoga di tahun ini, semua mimpi-mimpimu menjadi nyata. Aku berjanji akan selalu ada di sampingmu,
+                    mendukungmu melewati setiap tantangan, dan merayakan setiap kemenanganmu, sekecil apapun itu.
+                </p>
+                <p>
+                    Setiap detik bersamamu adalah momen yang berharga. Terima kasih sudah menerima kekuranganku,
+                    mensupport segala mimpiku, dan menjadi rumah tempat aku pulang.
+                </p>
+                <p>
+                    Tetaplah menjadi Viola yang aku kenal—yang ceria, baik hati, dan selalu bisa membuat hariku jadi
+                    lebih berwarna. I love you more than words can say. Jangan pernah berubah ya sayang.
+                </p>
+            </div>
+
+            <div class="mt-12 text-right">
+                <p class="font-cursive text-3xl text-primary">With Love,</p>
+                <p class="font-bold text-gray-800 text-xl mt-2 underline decoration-primary/30">Your Favorite Person ❤️
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="py-20 text-center text-white relative z-10">
+        <div class="animate-bounce mb-4 inline-block hover:scale-125 transition-transform">
+            <img src="mailbox.png" alt="Love Mail" class="w-16 h-16 object-contain"
+                onerror="this.innerHTML='<i data-lucide=\'gift\' class=\'w-12 h-12\'></i>'">
+        </div>
+        <h2 class="font-cursive text-4xl mb-4">Happy Birthday, Viola!</h2>
+        <p class="opacity-70 text-sm">Created with ❤️ just for you</p>
+
+        <div class="mt-12 flex justify-center gap-6 opacity-60">
+            <i data-lucide="instagram" class="w-5 h-5 cursor-pointer hover:text-white transition-colors"></i>
+            <i data-lucide="twitter" class="w-5 h-5 cursor-pointer hover:text-white transition-colors"></i>
+            <i data-lucide="heart" class="w-5 h-5 cursor-pointer hover:text-white transition-colors"></i>
+        </div>
+    </footer>
+
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Create floating hearts
+        const heartsContainer = document.getElementById('hearts-container');
+        const heartShapes = ['❤️', '💖', '💕', '💗', '✨', '🌸'];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'absolute select-none heart-fly drop-shadow-sm';
+            heart.innerHTML = heartShapes[Math.floor(Math.random() * heartShapes.length)];
+
+            const startX = Math.random() * 100;
+            const startSize = (Math.random() * 25 + 15);
+            const duration = (Math.random() * 20 + 15);
+
+            heart.style.left = startX + 'vw';
+            heart.style.top = '110vh';
+            heart.style.fontSize = startSize + 'px';
+            heart.style.opacity = (Math.random() * 0.5 + 0.3).toString();
+
+            // Use CSS Animation for smoother movement than JS-triggered style updates
+            heart.style.transition = `transform ${duration}s linear, opacity ${duration}s ease-in-out`;
+
+            heartsContainer.appendChild(heart);
+
+            // Trigger animation in next frame for smoothness
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const sway = (Math.random() - 0.5) * 30;
+                    const rotate = Math.random() * 720 - 360;
+                    heart.style.transform = `translate3d(${sway}vw, -135vh, 0) rotate(${rotate}deg) scale(1.2)`;
+                    heart.style.opacity = '0';
+                });
+            });
+
+            setTimeout(() => {
+                heart.remove();
+            }, (duration * 1000) + 100);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Scroll Reveal logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Music Control
+        const musicBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-music');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.classList.remove('animate-spin-slow');
+                musicBtn.innerHTML = '<i data-lucide="music-2" class="text-primary w-6 h-6"></i>';
+            } else {
+                audio.play().catch(e => console.log('Wait for user interaction'));
+                musicBtn.classList.add('animate-spin-slow');
+                musicBtn.innerHTML = '<i data-lucide="pause" class="text-primary w-6 h-6"></i>';
+            }
+            isPlaying = !isPlaying;
+            lucide.createIcons();
+        }
+
+        musicBtn.addEventListener('click', toggleMusic);
+
+        // Envelope interaction
+        const envelope = document.getElementById('envelope');
+        const trigger = document.getElementById('envelope-trigger');
+        const hint = document.getElementById('hint-container');
+
+        trigger.addEventListener('click', () => {
+            if (!envelope.classList.contains('open')) {
+                envelope.classList.add('open');
+                hint.classList.add('opacity-0');
+
+                // Otomatis play music saat amplop dibuka
+                if (!isPlaying) {
+                    toggleMusic();
+                }
+
+                // Trigger Confetti
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#ff758c', '#ff7eb3', '#fad0c4', '#ffffff']
+                });
+
+                // Extra confetti
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 400);
+            } else {
+                envelope.classList.remove('open');
+                hint.classList.remove('opacity-0');
+            }
+        });
+
+        // Sticky Navbar effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white/10', 'backdrop-blur-md', 'shadow-sm');
+            } else {
+                nav.classList.remove('bg-white/10', 'backdrop-blur-md', 'shadow-sm');
+            }
+        });
+    </script>
+</body>
+
+</html>
